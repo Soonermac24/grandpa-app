@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Papa App — Print QR Codes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #111111;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    body {
+      min-height: 100vh;
+      padding: 48px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .subtitle {
+      margin: 0 0 16px;
+      color: #666;
+      font-size: 16px;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .sheet {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .card {
+      flex: 1 1 360px;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 24px 32px;
+      border: 1.5px solid #111;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .card img {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      image-rendering: pixelated;
+      display: block;
+    }
+    .label {
+      margin-top: 22px;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #666;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      text-align: center;
+    }
+    .print-btn {
+      margin-top: 8px;
+      padding: 10px 22px;
+      font-size: 15px;
+      border: 1.5px solid #111;
+      background: #111;
+      color: #fff;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-weight: 600;
+    }
+    .print-btn:hover { background: #333; border-color: #333; }
+
+    @media print {
+      @page { margin: 12mm; }
+      body { padding: 0; gap: 24px; }
+      h1, .subtitle, .print-btn { display: none; }
+      .sheet { gap: 32px; page-break-inside: avoid; }
+      .card {
+        border: 2px solid #000;
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+      .card img { max-width: 320px; }
+      .label { font-size: 26px; }
+      .hint { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Papa App — QR codes</h1>
+  <p class="subtitle">Print this page, cut along the cards, and tape them up.</p>
+
+  <div class="sheet">
+    <div class="card">
+      <img src="qr-talk.png" alt="QR code linking to Papa App talk page" />
+      <div class="label">Scan to talk to Papa</div>
+      <div class="hint">Hold the microphone button and speak</div>
+    </div>
+
+    <div class="card">
+      <img src="qr-read.png" alt="QR code linking to Papa App read page" />
+      <div class="label">Papa's app — scan to install</div>
+      <div class="hint">Add to Home Screen for push notifications</div>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Print this sheet</button>
+</body>
+</html>
