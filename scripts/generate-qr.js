@@ -4,8 +4,9 @@ const path = require('path')
 const BASE = 'https://grandpa-app-roan.vercel.app'
 
 const targets = [
-  { url: `${BASE}/talk`, out: 'public/qr-talk.png' },
-  { url: `${BASE}/read`, out: 'public/qr-read.png' },
+  { url: `${BASE}/talk`,   out: 'public/qr-talk.png' },
+  { url: `${BASE}/read`,   out: 'public/qr-read.png' },
+  { url: `${BASE}/listen`, out: 'public/qr-listen.png' },
 ]
 
 const options = {

@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
+import Link from 'next/link'
 import { supabase } from '../../lib/supabase'
 import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 
@@ -8,6 +9,7 @@ export default function ReadPage() {
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
   const scrollRef = useRef(null)
+  const bottomRef = useRef(null)
   const { scale, color, setScale, setColor } = useMessageStyle()
 
   // Load recent messages
@@ -39,9 +41,10 @@ export default function ReadPage() {
 
   // Auto scroll to latest
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-    }
+    const id = requestAnimationFrame(() => {
+      bottomRef.current?.scrollIntoView({ block: 'end' })
+    })
+    return () => cancelAnimationFrame(id)
   }, [messages])
 
   // Register service worker
@@ -123,7 +126,20 @@ export default function ReadPage() {
             Messages
           </span>
         </div>
-        {!pushEnabled && 'PushManager' in (typeof window !== 'undefined' ? window : {}) && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link
+            href="/listen"
+            style={{
+              background: 'rgba(240,165,0,0.08)',
+              border: '1px solid rgba(240,165,0,0.35)',
+              color: '#f0a500', borderRadius: 20, padding: '6px 12px',
+              fontSize: 12, fontFamily: 'sans-serif', fontWeight: 600,
+              textDecoration: 'none',
+            }}
+          >
+            🎧 Listen
+          </Link>
+          {!pushEnabled && 'PushManager' in (typeof window !== 'undefined' ? window : {}) && (
           <button
             onClick={enablePushNotifications}
             disabled={pushLoading}
@@ -136,9 +152,10 @@ export default function ReadPage() {
             {pushLoading ? 'Setting up…' : '🔔 Notify me'}
           </button>
         )}
-        {pushEnabled && (
-          <span style={{ color: '#4ade80', fontSize: 12, fontFamily: 'sans-serif' }}>🔔 On</span>
-        )}
+          {pushEnabled && (
+            <span style={{ color: '#4ade80', fontSize: 12, fontFamily: 'sans-serif' }}>🔔 On</span>
+          )}
+        </div>
       </div>
 
       {/* Messages */}
@@ -180,6 +197,7 @@ export default function ReadPage() {
             </div>
           )
         })}
+        <div ref={bottomRef} />
       </div>
 
       <SettingsBar

@@ -6,6 +6,7 @@ import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 export default function DisplayPage() {
   const [messages, setMessages] = useState([])
   const scrollRef = useRef(null)
+  const bottomRef = useRef(null)
   const { scale, color, setScale, setColor } = useMessageStyle()
 
   useEffect(() => {
@@ -73,9 +74,10 @@ export default function DisplayPage() {
   }, [])
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-    }
+    const id = requestAnimationFrame(() => {
+      bottomRef.current?.scrollIntoView({ block: 'end' })
+    })
+    return () => cancelAnimationFrame(id)
   }, [messages])
 
   const clearConversation = async () => {
@@ -216,6 +218,7 @@ export default function DisplayPage() {
             </div>
           )
         })}
+        <div ref={bottomRef} />
       </div>
 
       <div style={{

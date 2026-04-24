@@ -32,5 +32,16 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Listen Mode",
+      "short_name": "Listen",
+      "description": "Live transcription of the conversation around you",
+      "url": "/listen",
+      "icons": [
+        { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }
+      ]
+    }
   ]
 }
