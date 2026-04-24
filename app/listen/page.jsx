@@ -2,11 +2,12 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 
-const CHUNK_MS = 3500
+const CHUNK_MS = 2500
 
 export default function ListenPage() {
   const [listening, setListening] = useState(false)
   const [transcripts, setTranscripts] = useState([])
+  const [inFlight, setInFlight] = useState(0)
   const [error, setError] = useState('')
 
   const streamRef = useRef(null)
@@ -15,6 +16,7 @@ export default function ListenPage() {
   const listeningRef = useRef(false)
 
   const transcribeChunk = async (blob) => {
+    setInFlight(n => n + 1)
     try {
       const fd = new FormData()
       fd.append('audio', blob, 'chunk.webm')
@@ -28,6 +30,8 @@ export default function ListenPage() {
       }
     } catch {
       // keep the loop going on single-chunk failures
+    } finally {
+      setInFlight(n => Math.max(0, n - 1))
     }
   }
 
@@ -87,7 +91,9 @@ export default function ListenPage() {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      height: '100dvh',
+      maxHeight: '100dvh',
+      overflow: 'hidden',
       background: '#000',
       color: '#fff',
       display: 'flex',
@@ -114,7 +120,9 @@ export default function ListenPage() {
           fontWeight: 700,
         }}>
           {listening && <span className="listen-dot" />}
-          {listening ? 'Listening' : 'Listen Mode'}
+          {listening
+            ? (inFlight > 0 ? 'Transcribing…' : 'Listening')
+            : 'Listen Mode'}
         </div>
         <button
           onClick={clear}
