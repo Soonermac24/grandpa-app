@@ -5,6 +5,9 @@ export const metadata = {
     statusBarStyle: 'black-translucent',
     title: 'Papa Listen',
   },
+  icons: {
+    apple: '/icon-dark-192.png',
+  },
 }
 
 export default function ListenLayout({ children }) {

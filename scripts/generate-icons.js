@@ -1,39 +1,69 @@
 const sharp = require('sharp')
 const path = require('path')
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#CC0000"/>
+// Tall Superman-style diamond (taller than wide), fully filled yellow.
+// Vertices: top (256,40), right (400,256), bottom (256,472), left (112,256).
+// Width 288, height 432 — aspect ratio ~0.67, unmistakably "diamond".
+const DIAMOND = 'M 256 40 L 400 256 L 256 472 L 112 256 Z'
 
-  <!-- Yellow outer shield w/ thin black rim -->
-  <path d="M 110 72 Q 256 54 402 72 Q 450 82 466 160 Q 440 340 256 484 Q 72 340 46 160 Q 62 82 110 72 Z"
-        fill="#FFD700" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/>
+// Bold red P sized to barely fit the diamond.
+// Stem: x=195–245 (w=50), y=132–378.
+// Bowl: extends to x=320 (~2px off the diamond's right edge at its top).
+// Inner hole cut via fill-rule evenodd.
+const LETTER_P = [
+  'M 195 132',
+  'L 290 132',
+  'Q 320 132 320 188',
+  'Q 320 244 290 244',
+  'L 245 244',
+  'L 245 378',
+  'L 195 378',
+  'Z',
+  'M 245 162',
+  'L 278 162',
+  'Q 294 162 294 188',
+  'Q 294 214 278 214',
+  'L 245 214',
+  'Z',
+].join(' ')
 
-  <!-- Red inner shield (leaves the yellow rim visible) -->
-  <path d="M 122 88 Q 256 72 390 88 Q 432 100 446 170 Q 422 332 256 466 Q 90 332 66 170 Q 80 100 122 88 Z"
-        fill="#CC0000"/>
-
-  <!-- Yellow diamond (tall, straight-sided rhombus) -->
-  <path d="M 256 100 L 410 256 L 256 412 L 102 256 Z" fill="#FFD700"/>
-
-  <!-- Bold red P -->
-  <path d="M 200 180 L 295 180 Q 325 180 325 228 Q 325 276 295 276 L 255 276 L 255 340 L 200 340 Z
-           M 255 208 L 285 208 Q 302 208 302 228 Q 302 248 285 248 L 255 248 Z"
-        fill="#CC0000" fill-rule="evenodd"/>
+function svgFor(bgColor) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="${bgColor}"/>
+  <path d="${DIAMOND}" fill="#FFD700"/>
+  <path d="${LETTER_P}" fill="#CC0000" fill-rule="evenodd"/>
 </svg>`
+}
 
-const targets = [
-  { out: 'public/icon-512.png', size: 512 },
-  { out: 'public/icon-192.png', size: 192 },
+const variants = [
+  {
+    label: 'red',
+    bg: '#CC0000',
+    outputs: [
+      ['public/icon-512.png', 512],
+      ['public/icon-192.png', 192],
+    ],
+  },
+  {
+    label: 'dark',
+    bg: '#000000',
+    outputs: [
+      ['public/icon-dark-512.png', 512],
+      ['public/icon-dark-192.png', 192],
+    ],
+  },
 ]
 
 ;(async () => {
-  for (const { out, size } of targets) {
-    const outPath = path.resolve(__dirname, '..', out)
-    await sharp(Buffer.from(svg))
-      .resize(size, size)
-      .png({ compressionLevel: 9 })
-      .toFile(outPath)
-    console.log(`✓ ${out} (${size}×${size})`)
+  for (const v of variants) {
+    const buf = Buffer.from(svgFor(v.bg))
+    for (const [out, size] of v.outputs) {
+      await sharp(buf)
+        .resize(size, size)
+        .png({ compressionLevel: 9 })
+        .toFile(path.resolve(__dirname, '..', out))
+      console.log(`✓ ${out}  (${size}×${size}, ${v.label})`)
+    }
   }
 })().catch(err => {
   console.error('Icon generation failed:', err)
