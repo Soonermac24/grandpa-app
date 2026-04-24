@@ -4,12 +4,20 @@ const path = require('path')
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" fill="#CC0000"/>
 
-  <path d="M 88 96 Q 256 64 424 96 L 444 186 Q 438 356 256 472 Q 74 356 68 186 Z"
-        fill="none" stroke="#7a0000" stroke-width="12" stroke-linejoin="round"/>
+  <!-- Yellow outer shield w/ thin black rim -->
+  <path d="M 110 72 Q 256 54 402 72 Q 450 82 466 160 Q 440 340 256 484 Q 72 340 46 160 Q 62 82 110 72 Z"
+        fill="#FFD700" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/>
 
-  <path d="M 256 80 L 432 256 L 256 432 L 80 256 Z" fill="#FFD700"/>
+  <!-- Red inner shield (leaves the yellow rim visible) -->
+  <path d="M 122 88 Q 256 72 390 88 Q 432 100 446 170 Q 422 332 256 466 Q 90 332 66 170 Q 80 100 122 88 Z"
+        fill="#CC0000"/>
 
-  <path d="M 180 175 L 295 175 Q 330 175 330 225 Q 330 275 295 275 L 240 275 L 240 355 L 180 355 Z M 240 205 L 285 205 Q 300 205 300 225 Q 300 245 285 245 L 240 245 Z"
+  <!-- Yellow diamond (tall, straight-sided rhombus) -->
+  <path d="M 256 100 L 410 256 L 256 412 L 102 256 Z" fill="#FFD700"/>
+
+  <!-- Bold red P -->
+  <path d="M 200 180 L 295 180 Q 325 180 325 228 Q 325 276 295 276 L 255 276 L 255 340 L 200 340 Z
+           M 255 208 L 285 208 Q 302 208 302 228 Q 302 248 285 248 L 255 248 Z"
         fill="#CC0000" fill-rule="evenodd"/>
 </svg>`
 

@@ -9,8 +9,8 @@ webpush.setVapidDetails(
 
 export async function POST(req) {
   try {
-    const { type, message, sender } = await req.json()
-    // type: 'papa_home' | 'new_message'
+    const { type, message, sender, minutes } = await req.json()
+    // type: 'papa_home' | 'new_message' | 'usage_spike'
 
     let targetType, payload
 
@@ -28,14 +28,22 @@ export async function POST(req) {
         body: message,
         url: '/read',
       })
+    } else if (type === 'usage_spike') {
+      targetType = null // broadcast to all subscribers
+      const mins = Number(minutes) || 0
+      const estCost = (mins * 0.006).toFixed(2)
+      payload = JSON.stringify({
+        title: '⚠️ Whisper usage spike',
+        body: `${mins} min transcribed in the last hour (~$${estCost})`,
+        url: '/read',
+      })
     } else {
       return Response.json({ error: 'Unknown type' }, { status: 400 })
     }
 
-    const { data: subs } = await supabase
-      .from('push_subscriptions')
-      .select('subscription')
-      .eq('type', targetType)
+    let query = supabase.from('push_subscriptions').select('subscription')
+    if (targetType) query = query.eq('type', targetType)
+    const { data: subs } = await query
 
     if (!subs?.length) return Response.json({ sent: 0 })
 

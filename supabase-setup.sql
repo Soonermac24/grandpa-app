@@ -38,6 +38,25 @@ create table if not exists push_subscriptions (
   updated_at timestamp with time zone default now()
 );
 
+-- Usage log: one row per Whisper call, used for spike-alert detection
+create table if not exists usage_log (
+  id uuid default gen_random_uuid() primary key,
+  kind text not null,
+  audio_seconds numeric default 0,
+  created_at timestamp with time zone default now()
+);
+create index if not exists usage_log_kind_created_at_idx
+  on usage_log (kind, created_at desc);
+
+-- Alert log: rate-limits spike alerts so we don't spam notifications
+create table if not exists alert_log (
+  id uuid default gen_random_uuid() primary key,
+  kind text not null,
+  created_at timestamp with time zone default now()
+);
+create index if not exists alert_log_kind_created_at_idx
+  on alert_log (kind, created_at desc);
+
 -- Enable Realtime on messages and presence
 alter publication supabase_realtime add table messages;
 alter publication supabase_realtime add table presence;
@@ -46,7 +65,11 @@ alter publication supabase_realtime add table presence;
 alter table messages enable row level security;
 alter table presence enable row level security;
 alter table push_subscriptions enable row level security;
+alter table usage_log enable row level security;
+alter table alert_log enable row level security;
 
 create policy "Allow all messages" on messages for all using (true) with check (true);
 create policy "Allow all presence" on presence for all using (true) with check (true);
 create policy "Allow all push" on push_subscriptions for all using (true) with check (true);
+create policy "Allow all usage_log" on usage_log for all using (true) with check (true);
+create policy "Allow all alert_log" on alert_log for all using (true) with check (true);
