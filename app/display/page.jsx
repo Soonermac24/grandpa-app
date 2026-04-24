@@ -1,10 +1,12 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 
 export default function DisplayPage() {
   const [messages, setMessages] = useState([])
   const scrollRef = useRef(null)
+  const { scale, color, setScale, setColor } = useMessageStyle()
 
   useEffect(() => {
     async function load() {
@@ -75,6 +77,18 @@ export default function DisplayPage() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messages])
+
+  const clearConversation = async () => {
+    const { error } = await supabase
+      .from('messages')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000')
+    if (error) {
+      console.error('Clear failed:', error)
+      return
+    }
+    setMessages([])
+  }
 
   const recent = messages.slice(-5)
 
@@ -191,8 +205,8 @@ export default function DisplayPage() {
                 {msg.sender}
               </div>
               <div style={{
-                color: isNewest ? '#ffffff' : 'rgba(255,255,255,0.75)',
-                fontSize,
+                color,
+                fontSize: `calc(${fontSize} * ${scale})`,
                 lineHeight: 1.25,
                 fontWeight: isNewest ? 400 : 300,
                 marginBottom: isNewest ? 0 : 20,
@@ -213,6 +227,14 @@ export default function DisplayPage() {
       }}>
         Scan the QR code on the back of this screen to send a message
       </div>
+
+      <SettingsBar
+        scale={scale}
+        color={color}
+        setScale={setScale}
+        setColor={setColor}
+        onClear={clearConversation}
+      />
 
       <style>{`
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }

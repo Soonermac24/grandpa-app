@@ -1,12 +1,14 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 
 export default function ReadPage() {
   const [messages, setMessages] = useState([])
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
   const scrollRef = useRef(null)
+  const { scale, color, setScale, setColor } = useMessageStyle()
 
   // Load recent messages
   useEffect(() => {
@@ -84,6 +86,18 @@ export default function ReadPage() {
     }
   }
 
+  const clearConversation = async () => {
+    const { error } = await supabase
+      .from('messages')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000')
+    if (error) {
+      console.error('Clear failed:', error)
+      return
+    }
+    setMessages([])
+  }
+
   const recent = messages.slice(-6)
 
   return (
@@ -156,8 +170,8 @@ export default function ReadPage() {
                 {msg.sender}
               </div>
               <div style={{
-                color: '#ffffff',
-                fontSize: isNewest ? 'clamp(32px, 8vw, 52px)' : 'clamp(22px, 5vw, 34px)',
+                color,
+                fontSize: `calc(${isNewest ? 'clamp(32px, 8vw, 52px)' : 'clamp(22px, 5vw, 34px)'} * ${scale})`,
                 lineHeight: 1.3,
                 fontWeight: isNewest ? 400 : 300,
               }}>
@@ -167,6 +181,14 @@ export default function ReadPage() {
           )
         })}
       </div>
+
+      <SettingsBar
+        scale={scale}
+        color={color}
+        setScale={setScale}
+        setColor={setColor}
+        onClear={clearConversation}
+      />
 
       <style>{`
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
