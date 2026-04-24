@@ -90,6 +90,20 @@
     }
     .print-btn:hover { background: #333; border-color: #333; }
 
+    .display-url {
+      margin-top: 4px;
+      text-align: center;
+      font-size: 15px;
+      color: #444;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .display-url .url {
+      font-family: "Courier New", Consolas, monospace;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: 0.02em;
+    }
+
     @media print {
       @page { margin: 12mm; }
       body { padding: 0; gap: 24px; }
@@ -103,6 +117,7 @@
       .card img { max-width: 320px; }
       .label { font-size: 26px; }
       .hint { font-size: 13px; }
+      .display-url { font-size: 13px; margin-top: 12px; }
     }
   </style>
 </head>
@@ -122,6 +137,11 @@
       <div class="label">Papa's app — scan to install</div>
       <div class="hint">Add to Home Screen for push notifications</div>
     </div>
+  </div>
+
+  <div class="display-url">
+    To set up the big screen, open:
+    <span class="url">https://grandpa-app-roan.vercel.app/display</span>
   </div>
 
   <button class="print-btn" onclick="window.print()">Print this sheet</button>
