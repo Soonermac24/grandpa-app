@@ -11,10 +11,13 @@ export default function TalkPage() {
   const [sent, setSent] = useState(null)       // last sent message text
   const [history, setHistory] = useState([])   // this session's sent messages
   const [error, setError] = useState('')
+  const [micGranted, setMicGranted] = useState(false)
+  const [enablingMic, setEnablingMic] = useState(false)
 
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
   const streamRef = useRef(null)
+  const wantsToRecordRef = useRef(false)
 
   // Load saved name from localStorage
   useEffect(() => {
@@ -28,6 +31,32 @@ export default function TalkPage() {
       navigator.serviceWorker.register('/sw.js').catch(() => {})
     }
   }, [])
+
+  // Check current mic permission so returning users skip the enable step
+  useEffect(() => {
+    if (typeof navigator === 'undefined' || !navigator.permissions) return
+    navigator.permissions.query({ name: 'microphone' })
+      .then(result => {
+        setMicGranted(result.state === 'granted')
+        result.onchange = () => setMicGranted(result.state === 'granted')
+      })
+      .catch(() => {})
+  }, [])
+
+  const enableMicrophone = async () => {
+    setError('')
+    setEnablingMic(true)
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // Release the stream right away — we just wanted the permission grant
+      stream.getTracks().forEach(t => t.stop())
+      setMicGranted(true)
+    } catch {
+      setError('Microphone access denied. Allow it in your browser settings.')
+    } finally {
+      setEnablingMic(false)
+    }
+  }
 
   // Watch papa's presence
   useEffect(() => {
@@ -59,8 +88,14 @@ export default function TalkPage() {
 
   const startRecording = async () => {
     setError('')
+    wantsToRecordRef.current = true
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // If the user already released before getUserMedia resolved, abort cleanly
+      if (!wantsToRecordRef.current) {
+        stream.getTracks().forEach(t => t.stop())
+        return
+      }
       streamRef.current = stream
       chunksRef.current = []
 
@@ -75,6 +110,7 @@ export default function TalkPage() {
   }
 
   const stopRecordingAndSend = () => {
+    wantsToRecordRef.current = false
     if (!mediaRecorderRef.current) return
     setRecording(false)
     setProcessing(true)
@@ -210,49 +246,85 @@ export default function TalkPage() {
         </div>
       </div>
 
-      {/* Big mic button */}
+      {/* Big mic button (or Enable Microphone gate) */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: 400 }}>
-        <button
-          onMouseDown={startRecording}
-          onMouseUp={stopRecordingAndSend}
-          onTouchStart={e => { e.preventDefault(); startRecording() }}
-          onTouchEnd={e => { e.preventDefault(); stopRecordingAndSend() }}
-          disabled={processing}
-          style={{
-            width: 160, height: 160, borderRadius: '50%',
-            background: recording
-              ? 'linear-gradient(135deg, #ef4444, #dc2626)'
-              : processing
-                ? 'linear-gradient(135deg, #6b7280, #4b5563)'
-                : 'linear-gradient(135deg, #1a1510, #2a2520)',
-            border: 'none', cursor: processing ? 'wait' : 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 60,
-            boxShadow: recording
-              ? '0 0 0 16px rgba(239,68,68,0.15), 0 12px 40px rgba(239,68,68,0.3)'
-              : '0 12px 40px rgba(0,0,0,0.18)',
-            transform: recording ? 'scale(1.07)' : 'scale(1)',
-            transition: 'all 0.15s ease',
-            userSelect: 'none', WebkitUserSelect: 'none',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          {processing ? '⏳' : '🎙️'}
-        </button>
+        {!micGranted ? (
+          <>
+            <button
+              onClick={enableMicrophone}
+              disabled={enablingMic}
+              style={{
+                width: '100%', maxWidth: 320,
+                padding: 22,
+                fontSize: 20, fontWeight: 800,
+                background: enablingMic ? '#e8e0d0' : '#f0a500',
+                color: enablingMic ? '#bbb' : '#fff',
+                border: 'none', borderRadius: 18,
+                cursor: enablingMic ? 'wait' : 'pointer',
+                fontFamily: 'sans-serif',
+                letterSpacing: '0.02em',
+                boxShadow: '0 10px 32px rgba(240,165,0,0.3)',
+              }}
+            >
+              {enablingMic ? 'Waiting…' : '🎙️  Enable Microphone'}
+            </button>
+            <div style={{
+              marginTop: 18, maxWidth: 280, textAlign: 'center',
+              color: '#888', fontSize: 14, lineHeight: 1.45,
+            }}>
+              Tap the button above and allow microphone access, then you can hold the mic to talk to Papa.
+            </div>
+            {error && (
+              <div style={{ marginTop: 14, color: '#dc2626', fontSize: 14, textAlign: 'center' }}>
+                {error}
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <button
+              onMouseDown={startRecording}
+              onMouseUp={stopRecordingAndSend}
+              onTouchStart={e => { e.preventDefault(); startRecording() }}
+              onTouchEnd={e => { e.preventDefault(); stopRecordingAndSend() }}
+              disabled={processing}
+              style={{
+                width: 160, height: 160, borderRadius: '50%',
+                background: recording
+                  ? 'linear-gradient(135deg, #ef4444, #dc2626)'
+                  : processing
+                    ? 'linear-gradient(135deg, #6b7280, #4b5563)'
+                    : 'linear-gradient(135deg, #1a1510, #2a2520)',
+                border: 'none', cursor: processing ? 'wait' : 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 60,
+                boxShadow: recording
+                  ? '0 0 0 16px rgba(239,68,68,0.15), 0 12px 40px rgba(239,68,68,0.3)'
+                  : '0 12px 40px rgba(0,0,0,0.18)',
+                transform: recording ? 'scale(1.07)' : 'scale(1)',
+                transition: 'all 0.15s ease',
+                userSelect: 'none', WebkitUserSelect: 'none',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              {processing ? '⏳' : '🎙️'}
+            </button>
 
-        <div style={{
-          marginTop: 20,
-          fontSize: 14, fontWeight: 700, letterSpacing: '0.1em',
-          color: recording ? '#ef4444' : processing ? '#9ca3af' : '#9ca3af',
-          textTransform: 'uppercase',
-        }}>
-          {recording ? 'RELEASE TO SEND' : processing ? 'SENDING…' : 'HOLD TO TALK'}
-        </div>
+            <div style={{
+              marginTop: 20,
+              fontSize: 14, fontWeight: 700, letterSpacing: '0.1em',
+              color: recording ? '#ef4444' : processing ? '#9ca3af' : '#9ca3af',
+              textTransform: 'uppercase',
+            }}>
+              {recording ? 'RELEASE TO SEND' : processing ? 'SENDING…' : 'HOLD TO TALK'}
+            </div>
 
-        {error && (
-          <div style={{ marginTop: 14, color: '#dc2626', fontSize: 14, textAlign: 'center' }}>
-            {error}
-          </div>
+            {error && (
+              <div style={{ marginTop: 14, color: '#dc2626', fontSize: 14, textAlign: 'center' }}>
+                {error}
+              </div>
+            )}
+          </>
         )}
       </div>
 
