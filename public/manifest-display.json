@@ -3,6 +3,7 @@
   "short_name": "Papa Display",
   "description": "Big screen for Papa's family messages",
   "start_url": "/display",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0f0e0c",
   "theme_color": "#0f0e0c",

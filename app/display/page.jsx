@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
+import Link from 'next/link'
 import { supabase } from '../../lib/supabase'
 import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 
@@ -132,6 +133,23 @@ export default function DisplayPage() {
             Family Messages
           </span>
         </div>
+
+        <Link
+          href="/listen?from=display"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            background: 'rgba(240,165,0,0.12)',
+            border: '1.5px solid rgba(240,165,0,0.4)',
+            color: '#f0a500',
+            borderRadius: 40,
+            padding: '10px 20px',
+            fontSize: 15, fontFamily: 'sans-serif',
+            fontWeight: 600, letterSpacing: '0.04em',
+            textDecoration: 'none',
+          }}
+        >
+          🎧 Listen Mode
+        </Link>
 
         <div
           aria-label="Papa is home"

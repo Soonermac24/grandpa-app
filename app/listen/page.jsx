@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 const CHUNK_MS = 2500
 
@@ -9,6 +10,11 @@ export default function ListenPage() {
   const [transcripts, setTranscripts] = useState([])
   const [inFlight, setInFlight] = useState(0)
   const [error, setError] = useState('')
+
+  const searchParams = useSearchParams()
+  const from = searchParams.get('from')
+  const backHref = from === 'display' ? '/display' : '/read'
+  const backLabel = from === 'display' ? 'Display' : 'Messages'
 
   const streamRef = useRef(null)
   const recorderRef = useRef(null)
@@ -107,11 +113,11 @@ export default function ListenPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         borderBottom: '1px solid rgba(255,255,255,0.12)',
       }}>
-        <Link href="/read" style={{
+        <Link href={backHref} style={{
           color: 'rgba(255,255,255,0.45)', fontSize: 14,
           textDecoration: 'none', padding: '4px 0',
         }}>
-          ← Messages
+          ← {backLabel}
         </Link>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8,
