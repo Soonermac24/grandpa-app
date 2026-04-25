@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 
 const CHUNK_MS = 2500
 
@@ -10,9 +9,13 @@ export default function ListenPage() {
   const [transcripts, setTranscripts] = useState([])
   const [inFlight, setInFlight] = useState(0)
   const [error, setError] = useState('')
+  const [from, setFrom] = useState(null)
 
-  const searchParams = useSearchParams()
-  const from = searchParams.get('from')
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setFrom(params.get('from'))
+  }, [])
+
   const backHref = from === 'display' ? '/display' : '/read'
   const backLabel = from === 'display' ? 'Display' : 'Messages'
 
