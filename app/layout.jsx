@@ -8,7 +8,7 @@ export const metadata = {
     title: 'Talk to Papa',
   },
   icons: {
-    apple: '/icon-192.png',
+    apple: '/icon-huh-blue-192.png',
   },
 }
 

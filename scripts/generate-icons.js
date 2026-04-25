@@ -19,16 +19,16 @@ const variants = [
     label: 'blue',
     bg: '#1E4FBF',
     outputs: [
-      ['public/icon-512.png', 512],
-      ['public/icon-192.png', 192],
+      ['public/icon-huh-blue-512.png', 512],
+      ['public/icon-huh-blue-192.png', 192],
     ],
   },
   {
     label: 'red',
     bg: '#CC0000',
     outputs: [
-      ['public/icon-dark-512.png', 512],
-      ['public/icon-dark-192.png', 192],
+      ['public/icon-huh-red-512.png', 512],
+      ['public/icon-huh-red-192.png', 192],
     ],
   },
 ]
