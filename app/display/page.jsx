@@ -6,6 +6,7 @@ import { SettingsBar, useMessageStyle } from '../_components/SettingsBar'
 
 export default function DisplayPage() {
   const [messages, setMessages] = useState([])
+  const [showQr, setShowQr] = useState(false)
   const scrollRef = useRef(null)
   const bottomRef = useRef(null)
   const { scale, color, setScale, setColor } = useMessageStyle()
@@ -135,6 +136,23 @@ export default function DisplayPage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button
+            onClick={() => setShowQr(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(240,165,0,0.12)',
+              border: '1.5px solid rgba(240,165,0,0.4)',
+              color: '#f0a500',
+              borderRadius: 40,
+              padding: '10px 18px',
+              fontSize: 15, fontFamily: 'sans-serif',
+              fontWeight: 600, letterSpacing: '0.04em',
+              cursor: 'pointer',
+            }}
+          >
+            📷 Send me a message
+          </button>
+
           <Link
             href="/guide"
             style={{
@@ -265,8 +283,51 @@ export default function DisplayPage() {
         fontSize: 12, letterSpacing: '0.06em',
         fontFamily: 'sans-serif'
       }}>
-        Scan the QR code on the back of this screen to send a message
+        Tap “Send me a message” above — or scan the QR code on the back of this screen
       </div>
+
+      {showQr && (
+        <div
+          onClick={() => setShowQr(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 50,
+            background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            padding: 24, fontFamily: 'sans-serif',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: '#0f0e0c', border: '1px solid rgba(240,165,0,0.3)',
+              borderRadius: 24, padding: '36px 40px 32px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              maxWidth: 520, boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+            }}
+          >
+            <h2 style={{ color: '#f0a500', fontSize: 'clamp(26px, 4vw, 38px)', margin: '0 0 6px', fontWeight: 800, textAlign: 'center' }}>
+              Send Papa a message
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 18, margin: '0 0 24px', textAlign: 'center', lineHeight: 1.4 }}>
+              Open your phone camera and point it at this code.
+            </p>
+            <div style={{ background: '#fff', padding: 18, borderRadius: 18 }}>
+              <img src="/qr-talk.png" alt="QR code to send Papa a message" style={{ display: 'block', width: 'min(64vw, 320px)', height: 'min(64vw, 320px)' }} />
+            </div>
+            <button
+              onClick={() => setShowQr(false)}
+              style={{
+                marginTop: 28, background: '#f0a500', color: '#1a1410',
+                border: 'none', borderRadius: 14, padding: '16px 44px',
+                fontSize: 20, fontWeight: 800, cursor: 'pointer',
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       <SettingsBar
         scale={scale}

@@ -102,8 +102,9 @@ const SLIDES = [
   {
     ch: 'family', icon: '📷',
     title: 'Scan the QR code',
-    body: 'On your phone, open the camera and point it at the QR code on the back of Papa’s screen. Tap the link that pops up.',
-    say: 'On your phone, open the camera and point it at the Q R code on the back of Papa’s screen. Tap the link that pops up.',
+    body: 'On your phone, open the camera and point it at the QR code below (it’s also on the back of Papa’s screen). Tap the link that pops up.',
+    demo: 'qr',
+    say: 'On your phone, open the camera and point it at the Q R code on the screen. Tap the link that pops up.',
   },
   {
     ch: 'family', icon: '✍️',
@@ -146,10 +147,17 @@ const CHAPTERS = [
 const CHAPTER_START = {}
 SLIDES.forEach((s, i) => { if (CHAPTER_START[s.ch] === undefined) CHAPTER_START[s.ch] = i })
 
+// Papa's own chapters play slower, so he has more time to read and
+// take each step in. Family chapters move at a normal pace.
+const PAPA_CHAPTERS = new Set(['welcome', 'reading', 'listen', 'bigger', 'phone', 'done'])
+
 // How long a slide stays up (ms). Scales with how much there is to
 // read, with a comfortable floor and ceiling for slow readers.
 function slideDuration(slide) {
   const words = (slide.title + ' ' + slide.body).split(/\s+/).length
+  if (PAPA_CHAPTERS.has(slide.ch)) {
+    return Math.min(20000, Math.max(10000, words * 560))
+  }
   return Math.min(13000, Math.max(6000, words * 380))
 }
 
@@ -483,6 +491,16 @@ function Demo({ kind }) {
         <div style={{ background: 'rgba(240,165,0,0.15)', border: `1px solid rgba(240,165,0,0.35)`, color: GOLD, borderRadius: 24, padding: '12px 22px', fontSize: 19, fontWeight: 600, fontFamily: 'sans-serif' }}>
           🔔 Notify me
         </div>
+      </div>
+    )
+  }
+  if (kind === 'qr') {
+    return (
+      <div style={{ ...box, flexDirection: 'column', gap: 12, marginTop: 26 }}>
+        <div style={{ background: '#fff', padding: 16, borderRadius: 18, boxShadow: '0 10px 32px rgba(0,0,0,0.4)' }}>
+          <img src="/qr-talk.png" alt="QR code to send Papa a message" width={220} height={220} style={{ display: 'block', width: 220, height: 220 }} />
+        </div>
+        <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 16, fontFamily: 'sans-serif' }}>Point your phone camera here</span>
       </div>
     )
   }
