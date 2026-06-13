@@ -28,6 +28,20 @@ const SLIDES = [
     say: 'Welcome to Papa App. This guide shows you what each screen looks like, and points at exactly what to tap. Let us go through it together.',
   },
 
+  // ── Open your screen ── (how to get the display up if it's not already)
+  {
+    ch: 'open', scene: 'chromebook', highlight: 'icon',
+    title: 'Opening your screen',
+    body: 'First things first: if your screen is ever dark or closed, here’s how to bring it back. On your Chromebook, find the “Papa’s Screen” icon (circled) and click it once — your messages open right up.',
+    say: 'First things first. If your screen is ever dark or closed, here is how to bring it back. On your Chromebook, find the Papa’s Screen icon, circled here, and click it once. Your messages open right up.',
+  },
+  {
+    ch: 'open', scene: 'address', highlight: 'url',
+    title: 'Can’t find the icon? Type this',
+    body: 'No icon? Open Chrome, click the long bar across the top, and type:  grandpa-app-roan.vercel.app/display  — then press Enter. That brings up your screen too.',
+    say: 'Can’t find the icon? Open Chrome, click the long bar across the top, and type: grandpa dash app dash roan dot vercel dot app, slash, display. Then press Enter. That brings up your screen too.',
+  },
+
   // ── Reading messages ── (messages build up: Kaylee → +Graythan → +Colbie)
   {
     ch: 'reading', scene: 'display', count: 1, highlight: 'message',
@@ -222,6 +236,7 @@ const SLIDES = [
 
 const CHAPTERS = [
   { id: 'welcome', icon: '👋', label: 'Welcome' },
+  { id: 'open', icon: '🖥️', label: 'Open your screen' },
   { id: 'reading', icon: '💬', label: 'Reading messages' },
   { id: 'listen', icon: '🎧', label: 'Listen Mode' },
   { id: 'bigger', icon: '🔠', label: 'Bigger text & color' },
@@ -237,7 +252,7 @@ const CHAPTER_START = {}
 SLIDES.forEach((s, i) => { if (CHAPTER_START[s.ch] === undefined) CHAPTER_START[s.ch] = i })
 
 // Papa's own chapters play slower, so he has more time to read each step.
-const PAPA_CHAPTERS = new Set(['welcome', 'reading', 'listen', 'bigger', 'captions', 'phone', 'done'])
+const PAPA_CHAPTERS = new Set(['welcome', 'open', 'reading', 'listen', 'bigger', 'captions', 'phone', 'done'])
 
 function slideDuration(slide) {
   const words = (slide.title + ' ' + slide.body).split(/\s+/).length

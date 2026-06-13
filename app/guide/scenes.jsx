@@ -325,6 +325,46 @@ export default function GuideScene({ name, highlight, count, device, msgs }) {
         </Phone>
       )
 
+    /* Chromebook desktop with the saved "Papa's Screen" shortcut */
+    case 'chromebook':
+      return (
+        <Monitor>
+          <div style={{ flex: 1, background: 'linear-gradient(160deg,#24406e,#0f1830)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, ...ring(highlight === 'icon') }}>
+              <div style={{ width: 'clamp(56px,9vw,92px)', aspectRatio: '1', borderRadius: 20, overflow: 'hidden', background: '#fff', boxShadow: '0 10px 28px rgba(0,0,0,0.45)' }}>
+                <img src="/icon-huh-red-192.png" alt="Papa's Screen" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              <span style={{ color: '#fff', fontSize: 'clamp(13px,1.8vw,18px)', fontFamily: sans, fontWeight: 700, textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}>Papa’s Screen</span>
+            </div>
+          </div>
+          {/* ChromeOS shelf */}
+          <div style={{ height: '15%', minHeight: 30, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'rgba(255,255,255,0.5)' }} />
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(255,255,255,0.35)' }} />
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(255,255,255,0.35)' }} />
+          </div>
+        </Monitor>
+      )
+
+    /* Chrome address bar with the screen's web address typed in */
+    case 'address':
+      return (
+        <Monitor>
+          <div style={{ background: '#dfe3e8', padding: '8px 10px', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ display: 'flex', gap: 4 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#bbb' }} />
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#bbb' }} />
+            </span>
+            <div style={{ flex: 1, background: '#fff', borderRadius: 20, padding: '8px 14px', fontFamily: sans, fontSize: 'clamp(11px,1.7vw,17px)', color: '#222', ...ring(highlight === 'url') }}>
+              grandpa-app-roan.vercel.app/display
+            </div>
+          </div>
+          <div style={{ flex: 1, background: DARK, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.3)', fontFamily: serif, fontSize: 'clamp(16px,2.4vw,26px)' }}>
+            Your screen opens here
+          </div>
+        </Monitor>
+      )
+
     default:
       return null
   }
