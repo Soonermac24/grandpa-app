@@ -128,6 +128,18 @@ export default function ReadPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Link
+            href="/guide"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(240,165,0,0.25)',
+              color: 'rgba(240,165,0,0.8)', borderRadius: 20, padding: '6px 12px',
+              fontSize: 12, fontFamily: 'sans-serif', fontWeight: 600,
+              textDecoration: 'none',
+            }}
+          >
+            ❔ Guide
+          </Link>
+          <Link
             href="/listen"
             style={{
               background: 'rgba(240,165,0,0.08)',

@@ -1,14 +1,35 @@
 import webpush from 'web-push'
 import { supabase } from '../../../lib/supabase-server'
 
-webpush.setVapidDetails(
-  process.env.VAPID_EMAIL,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-)
+// web-push requires the VAPID "subject" to be a mailto: or https: URL,
+// not a bare email. Normalize whatever's in the env so a plain address
+// like "papa@example.com" still works.
+function vapidSubject() {
+  const raw = (process.env.VAPID_EMAIL || '').trim()
+  if (!raw) return 'mailto:support@papa-app.local'
+  if (raw.startsWith('mailto:') || raw.startsWith('http')) return raw
+  return `mailto:${raw}`
+}
+
+// Configure lazily on first send (and only once) rather than at import.
+// Doing it at module load crashed `next build`'s page-data collection
+// when the env was missing/invalid.
+let vapidReady = false
+function ensureVapid() {
+  if (vapidReady) return true
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+  const priv = process.env.VAPID_PRIVATE_KEY
+  if (!pub || !priv) return false
+  webpush.setVapidDetails(vapidSubject(), pub, priv)
+  vapidReady = true
+  return true
+}
 
 export async function POST(req) {
   try {
+    if (!ensureVapid()) {
+      return Response.json({ error: 'Push notifications are not configured' }, { status: 503 })
+    }
     const { type, message, sender, minutes } = await req.json()
     // type: 'papa_home' | 'new_message' | 'usage_spike'
 

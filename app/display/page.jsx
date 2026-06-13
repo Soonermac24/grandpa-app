@@ -134,22 +134,41 @@ export default function DisplayPage() {
           </span>
         </div>
 
-        <Link
-          href="/listen?from=display"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            background: 'rgba(240,165,0,0.12)',
-            border: '1.5px solid rgba(240,165,0,0.4)',
-            color: '#f0a500',
-            borderRadius: 40,
-            padding: '10px 20px',
-            fontSize: 15, fontFamily: 'sans-serif',
-            fontWeight: 600, letterSpacing: '0.04em',
-            textDecoration: 'none',
-          }}
-        >
-          🎧 Listen Mode
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Link
+            href="/guide"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(255,255,255,0.04)',
+              border: '1.5px solid rgba(240,165,0,0.25)',
+              color: 'rgba(240,165,0,0.85)',
+              borderRadius: 40,
+              padding: '10px 18px',
+              fontSize: 15, fontFamily: 'sans-serif',
+              fontWeight: 600, letterSpacing: '0.04em',
+              textDecoration: 'none',
+            }}
+          >
+            ❔ How to use this
+          </Link>
+
+          <Link
+            href="/listen?from=display"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: 'rgba(240,165,0,0.12)',
+              border: '1.5px solid rgba(240,165,0,0.4)',
+              color: '#f0a500',
+              borderRadius: 40,
+              padding: '10px 20px',
+              fontSize: 15, fontFamily: 'sans-serif',
+              fontWeight: 600, letterSpacing: '0.04em',
+              textDecoration: 'none',
+            }}
+          >
+            🎧 Listen Mode
+          </Link>
+        </div>
 
         <div
           aria-label="Papa is home"
