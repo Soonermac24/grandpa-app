@@ -45,9 +45,9 @@ const SLIDES = [
   // ── Listen Mode ── (shown on Papa's home computer; then on the phone)
   {
     ch: 'listen', scene: 'display', count: 3, highlight: 'listen',
-    title: 'Listen Mode — read what people say',
-    body: 'Talking with someone in the same room and can’t hear them? On your Home screen, tap the gold “Listen Mode” button at the top (circled).',
-    say: 'Are you talking with someone in the same room, and cannot hear them well? On your home screen, tap the gold Listen Mode button at the top, circled here.',
+    title: 'Listen Mode — for general conversation',
+    body: 'The best way to follow family in the room is to have them talk into their phone — their words show up here with their name (the “For family” section shows how). Listen Mode is different: it captions the general conversation around you, but it won’t show who’s talking — so it’s best for one person who doesn’t have the app. To start, tap “Listen Mode” at the top (circled).',
+    say: 'The best way to follow family in the room is to have them talk into their phone. Their words show up here with their name, and the For family section shows how. Listen Mode is different. It captions the general conversation around you, but it will not show who is talking. So it is best for one person who does not have the app. To start, tap Listen Mode at the top, circled here.',
   },
   {
     ch: 'listen', scene: 'listen', device: 'monitor', highlight: 'listenbtn',
