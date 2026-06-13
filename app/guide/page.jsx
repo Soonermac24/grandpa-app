@@ -378,7 +378,7 @@ export default function GuidePage() {
             </h2>
 
             {slide.scene
-              ? <GuideScene name={slide.scene} highlight={slide.highlight} />
+              ? <GuideScene name={slide.scene} highlight={slide.highlight} count={slide.count} device={slide.device} />
               : <div style={{ fontSize: 'clamp(56px, 9vw, 104px)', lineHeight: 1 }}>{slide.icon}</div>}
 
             <p style={{ color: '#fff', fontSize: 'clamp(17px, 2.3vw, 26px)', lineHeight: 1.4, margin: 0, maxWidth: 760, fontFamily: 'Georgia, serif' }}>
