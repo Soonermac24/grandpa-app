@@ -96,12 +96,12 @@ function Msg({ sender, text, big, color = '#fff' }) {
 
 /* ── The scene dispatcher ──────────────────────────────────────── */
 
-export default function GuideScene({ name, highlight, count, device }) {
+export default function GuideScene({ name, highlight, count, device, msgs }) {
   switch (name) {
 
     /* Papa's big home screen */
     case 'display': {
-      const shown = MESSAGES.slice(0, count || MESSAGES.length)
+      const shown = msgs || MESSAGES.slice(0, count || MESSAGES.length)
       return (
         <Monitor>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', borderBottom: '1px solid rgba(240,165,0,0.12)' }}>
@@ -153,7 +153,7 @@ export default function GuideScene({ name, highlight, count, device }) {
             <div style={{ fontSize: 40, marginBottom: 6 }}>👋</div>
             <div style={{ fontSize: 19, fontWeight: 800, color: '#1a1410', marginBottom: 4 }}>Talk to Papa</div>
             <div style={{ fontSize: 12, color: '#999', textAlign: 'center', marginBottom: 22 }}>Enter your name so he knows who’s sending</div>
-            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Kaylee|</div>
+            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Rhett|</div>
             <div style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 12, background: GOLD, color: '#fff', fontSize: 14, fontWeight: 800, textAlign: 'center' }}>Let’s go →</div>
           </div>
         </Phone>
@@ -165,7 +165,7 @@ export default function GuideScene({ name, highlight, count, device }) {
         <Phone bg={CREAM}>
           <StatusBar />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px', fontFamily: sans }}>
-            <span style={{ color: '#bbb', fontSize: 12 }}>← Kaylee</span>
+            <span style={{ color: '#bbb', fontSize: 12 }}>← Rhett</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.4)', borderRadius: 20, padding: '4px 10px', fontSize: 11, color: '#16a34a', fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN }} /> Papa is home
             </span>
@@ -187,10 +187,12 @@ export default function GuideScene({ name, highlight, count, device }) {
             <span style={{ background: 'rgba(240,165,0,0.15)', border: '1px solid rgba(240,165,0,0.35)', color: GOLD, borderRadius: 20, padding: '5px 11px', fontSize: 11, fontWeight: 600, ...ring(highlight === 'notify') }}>🔔 Notify me</span>
           </div>
           <div style={{ flex: 1, padding: '8px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-            <Msg sender={MESSAGES[1].sender} text={MESSAGES[1].text} />
-            <div style={ring(highlight === 'message')}>
-              <Msg sender={MESSAGES[2].sender} text={MESSAGES[2].text} big />
-            </div>
+            {(msgs || [MESSAGES[1], MESSAGES[2]]).map((m, i, arr) => {
+              const big = i === arr.length - 1
+              return big
+                ? <div key={m.sender} style={ring(highlight === 'message')}><Msg sender={m.sender} text={m.text} big /></div>
+                : <Msg key={m.sender} sender={m.sender} text={m.text} />
+            })}
           </div>
         </Phone>
       )
@@ -305,15 +307,15 @@ export default function GuideScene({ name, highlight, count, device }) {
         <Phone bg="linear-gradient(160deg,#2a2333,#14101b)">
           <StatusBar dark />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: sans }}>
-            <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'linear-gradient(135deg,#f0a500,#d98a00)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 34 }}>🧑</div>
-            <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginTop: 8 }}>Kaylee</div>
+            <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'linear-gradient(135deg,#8a5a2b,#5e3d1c)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>👦🏽</div>
+            <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginTop: 8 }}>Owen</div>
             {/* picture-in-picture self */}
             <div style={{ position: 'absolute', top: 36, right: 12, width: 46, height: 64, borderRadius: 10, background: '#3a3340', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>👴</div>
           </div>
           {/* caption box */}
           <div style={{ margin: '0 12px', borderRadius: 12, background: 'rgba(0,0,0,0.75)', border: '1px solid rgba(255,255,255,0.15)', padding: '10px 12px', ...ring(highlight === 'captionbox') }}>
             <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, fontFamily: sans }}>Live Captions</div>
-            <div style={{ color: '#fff', fontSize: 14, fontFamily: sans, marginTop: 3 }}>Hi Papa, can you hear me okay?</div>
+            <div style={{ color: '#fff', fontSize: 14, fontFamily: sans, marginTop: 3 }}>Hi Papa, I miss you lots!</div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 14, padding: '14px 0 18px', fontSize: 18 }}>
             <span style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(255,255,255,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🔇</span>

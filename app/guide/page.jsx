@@ -61,16 +61,15 @@ const SLIDES = [
     body: 'When you’re done, tap the red “Stop” button (circled). That tells it you’re finished, so it stops listening and stays nice and ready for the next time you need it.',
     say: 'When you are done, always tap the red Stop button, circled here. That tells it you are finished, so it stops listening, and stays nice and ready for the next time you need it.',
   },
-  {
-    ch: 'listen', scene: 'listen', device: 'phone', highlight: 'listenbtn',
-    title: 'Out in public? Use Listen on your phone',
-    body: 'Listen Mode also works on your phone when you’re away from home — at a restaurant, the doctor, anywhere. Tap “Listen” the same way, and remember to tap “Stop” when you’re done here too.',
-    say: 'Listen Mode also works on your phone, when you are away from home. At a restaurant, the doctor, anywhere. Tap Listen the same way, and remember to tap Stop when you are done here too.',
-  },
 
   // ── Bigger text & color ──
   {
-    ch: 'bigger', scene: 'display', count: 3, highlight: 'gear',
+    ch: 'bigger', scene: 'display', highlight: 'gear',
+    msgs: [
+      { sender: 'GRAYTHAN', text: 'Can’t wait to see you!' },
+      { sender: 'COLBIE', text: 'You’re my favorite, Papa!' },
+      { sender: 'PRESTON', text: 'You give the best hugs, Papa!' },
+    ],
     title: 'Make the words bigger',
     body: 'See the small gear in the bottom-right corner (circled)? Tap it to open your settings.',
     say: 'See the small gear in the bottom right corner, circled here? Tap it to open your settings.',
@@ -108,18 +107,35 @@ const SLIDES = [
     say: 'Now, when Papa is on a Face Time call, a caption box, circled here, shows what the other person is saying. So he can read along as they talk.',
   },
 
-  // ── On your phone (Read) ──
+  // ── On your phone ── (read, notify, listen on phone, add to home screen)
   {
     ch: 'phone', scene: 'read', highlight: 'message',
+    msgs: [{ sender: 'TRINITY', text: 'I drew you a picture, Papa!' }],
     title: 'Reading on your phone',
-    body: 'Away from home? Open Papa App on your phone and tap “Messages.” The same family messages show up here in big letters.',
-    say: 'Are you away from home? Open Papa App on your phone, and tap Messages. The same family messages show up here, in big letters.',
+    body: 'Away from home? Open Papa App on your phone and tap “Messages.” The same family messages show up here in big letters — like this one from Trinity.',
+    say: 'Are you away from home? Open Papa App on your phone, and tap Messages. The same family messages show up here in big letters. Like this sweet one from Trinity.',
   },
   {
     ch: 'phone', scene: 'read', highlight: 'notify',
+    msgs: [
+      { sender: 'TRINITY', text: 'I drew you a picture, Papa!' },
+      { sender: 'PRESTON', text: 'You give the best hugs, Papa!' },
+    ],
     title: 'Get a buzz when family writes',
-    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family sends you a message.',
-    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family sends you a message.',
+    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family writes — like this new note from Preston.',
+    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family writes. Like this new note from Preston.',
+  },
+  {
+    ch: 'phone', scene: 'listen', device: 'phone', highlight: 'listenbtn',
+    title: 'Use Listen Mode on your phone',
+    body: 'Listen Mode is on your phone too. When you’re out — a restaurant, the doctor — open Papa App, tap “Listen” (circled), and read what people say. Tap “Stop” when you’re finished.',
+    say: 'Listen Mode is on your phone too. When you are out, at a restaurant, or the doctor, open Papa App, tap Listen, circled here, and read what people say. Then tap Stop when you are finished.',
+  },
+  {
+    ch: 'phone', scene: 'safari-share', highlight: 'share',
+    title: 'Put your screen on your phone',
+    body: 'You can save Papa App to your phone so it opens like a real app — no typing the address. In Safari, tap the Share button (circled), then “Add to Home Screen.” (The picture steps are in “Add to your phone.”)',
+    say: 'You can save Papa App to your phone, so it opens like a real app, with no typing the address. In Safari, tap the Share button, circled here, then Add to Home Screen. The picture steps are coming up in Add to your phone.',
   },
 
   // ── For family ──
@@ -138,8 +154,8 @@ const SLIDES = [
   {
     ch: 'family', scene: 'talk-name', highlight: 'name',
     title: 'Type your name once',
-    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Kaylee” or “Grandma.” Your phone remembers it after that.',
-    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Kaylee, or Grandma. Your phone remembers it after that.',
+    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Rhett” or “Grandma.” Your phone remembers it after that.',
+    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Rhett, or Grandma. Your phone remembers it after that.',
   },
   {
     ch: 'family', scene: 'talk', highlight: 'mic',
@@ -162,10 +178,15 @@ const SLIDES = [
     say: 'You are on the phone with Papa. Open the Papa App on your phone too. Then press and hold the microphone, circled here, and say what you are telling him. Let go to send.',
   },
   {
-    ch: 'calling', scene: 'display', count: 3, highlight: 'message',
+    ch: 'calling', scene: 'display', highlight: 'message',
+    msgs: [
+      { sender: 'KAYLEE', text: 'I love you, Papa!' },
+      { sender: 'GRAYTHAN', text: 'Can’t wait to see you!' },
+      { sender: 'PAITYN', text: 'I love you to the moon, Papa!' },
+    ],
     title: 'Papa reads it on his screen',
-    body: 'Your words appear big on Papa’s screen at home (circled). So even on a phone call, he can read along with what you’re saying.',
-    say: 'Your words appear big on Papa’s screen at home, circled here. So even on a phone call, he can read along with what you are saying.',
+    body: 'Your words appear big on Papa’s screen at home (circled) — here’s Paityn’s. So even on a phone call, he can read along with what you’re saying.',
+    say: 'Your words appear big on Papa’s screen at home, circled here. Here is Paityn’s. So even on a phone call, he can read along with what you are saying.',
   },
 
   // ── Add to home screen ──
@@ -378,7 +399,7 @@ export default function GuidePage() {
             </h2>
 
             {slide.scene
-              ? <GuideScene name={slide.scene} highlight={slide.highlight} count={slide.count} device={slide.device} />
+              ? <GuideScene name={slide.scene} highlight={slide.highlight} count={slide.count} device={slide.device} msgs={slide.msgs} />
               : <div style={{ fontSize: 'clamp(56px, 9vw, 104px)', lineHeight: 1 }}>{slide.icon}</div>}
 
             <p style={{ color: '#fff', fontSize: 'clamp(17px, 2.3vw, 26px)', lineHeight: 1.4, margin: 0, maxWidth: 760, fontFamily: 'Georgia, serif' }}>
