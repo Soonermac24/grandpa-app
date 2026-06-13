@@ -337,24 +337,24 @@ const chip = { background: 'transparent', border: '1px solid rgba(240,165,0,0.35
 function ListenScene({ highlight, pc }) {
   const stopping = highlight === 'stopbtn'
   const header = (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 16px', fontFamily: sans }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: pc ? '9px 18px' : '6px 16px', fontFamily: sans, borderBottom: pc ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
       <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>← Display</span>
-      <span style={{ color: stopping ? RED : 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.13em', textTransform: 'uppercase', fontWeight: 700 }}>
+      <span style={{ color: stopping ? RED : 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
         {stopping ? '● Listening' : 'Listen Mode'}
       </span>
-      <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>Clear</span>
+      <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '3px 9px' }}>Clear</span>
     </div>
   )
   const body = (
-    <div style={{ flex: 1, padding: pc ? '24px 44px' : '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div style={{ flex: 1, padding: pc ? '26px 44px 0' : '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: pc ? 'flex-start' : 'center' }}>
       {stopping
         ? <div style={{ color: '#fff', fontSize: pc ? 'clamp(26px,3.2vw,46px)' : 'clamp(20px,3vw,30px)', fontWeight: 500, lineHeight: 1.3 }}>Would you like some coffee?</div>
-        : <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: pc ? 18 : 15, textAlign: 'center', lineHeight: 1.5 }}>Tap <b style={{ color: '#fff' }}>Listen</b> to start<br />transcribing the conversation around you.</div>}
+        : <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: pc ? 18 : 15, textAlign: 'center', lineHeight: 1.5, width: '100%' }}>Tap <b style={{ color: '#fff' }}>Listen</b> to start<br />transcribing the conversation around you.</div>}
     </div>
   )
-  const btnBase = { width: '100%', maxWidth: pc ? 380 : '100%', padding: '16px', fontSize: 18, fontWeight: 700, borderRadius: 14, textAlign: 'center', fontFamily: sans }
+  const btnBase = { width: '100%', maxWidth: pc ? 440 : '100%', padding: '16px', fontSize: 18, fontWeight: 700, borderRadius: 14, textAlign: 'center', fontFamily: sans }
   const button = (
-    <div style={{ padding: pc ? '14px 0 26px' : '14px 18px 20px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ padding: pc ? '14px 18px 18px' : '14px 18px 20px', display: 'flex', justifyContent: 'center', borderTop: pc ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
       {stopping
         ? <div style={{ ...btnBase, background: `linear-gradient(135deg,${RED},#dc2626)`, color: '#fff', ...ring(true) }}>⏹  Stop</div>
         : <div style={{ ...btnBase, background: `linear-gradient(135deg,${GOLD},#d98a00)`, color: '#1a1410', ...ring(highlight === 'listenbtn') }}>🎙  Listen</div>}
