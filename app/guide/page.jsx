@@ -68,7 +68,7 @@ const SLIDES = [
     msgs: [
       { sender: 'GRAYTHAN', text: 'Can’t wait to see you!' },
       { sender: 'COLBIE', text: 'You’re my favorite, Papa!' },
-      { sender: 'PRESTON', text: 'You give the best hugs, Papa!' },
+      { sender: 'TRINITY', text: 'I drew you a picture, Papa!' },
     ],
     title: 'Make the words bigger',
     body: 'See the small gear in the bottom-right corner (circled)? Tap it to open your settings.',
@@ -110,20 +110,17 @@ const SLIDES = [
   // ── On your phone ── (read, notify, listen on phone, add to home screen)
   {
     ch: 'phone', scene: 'read', highlight: 'message',
-    msgs: [{ sender: 'TRINITY', text: 'I drew you a picture, Papa!' }],
+    msgs: [{ sender: 'RHETT', text: 'You’re my best buddy, Papa!' }],
     title: 'Reading on your phone',
-    body: 'Away from home? Open Papa App on your phone and tap “Messages.” The same family messages show up here in big letters — like this one from Trinity.',
-    say: 'Are you away from home? Open Papa App on your phone, and tap Messages. The same family messages show up here in big letters. Like this sweet one from Trinity.',
+    body: 'Away from home? Open Papa App on your phone and tap “Messages.” The same family messages show up here in big letters — like this one from Rhett.',
+    say: 'Are you away from home? Open Papa App on your phone, and tap Messages. The same family messages show up here in big letters. Like this sweet one from Rhett.',
   },
   {
     ch: 'phone', scene: 'read', highlight: 'notify',
-    msgs: [
-      { sender: 'TRINITY', text: 'I drew you a picture, Papa!' },
-      { sender: 'PRESTON', text: 'You give the best hugs, Papa!' },
-    ],
+    msgs: [{ sender: 'NANNY', text: 'Stop buying all those guns!' }],
     title: 'Get a buzz when family writes',
-    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family writes — like this new note from Preston.',
-    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family writes. Like this new note from Preston.',
+    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family writes — like this one from Nanny.',
+    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family writes. Like this one from Nanny.',
   },
   {
     ch: 'phone', scene: 'listen', device: 'phone', highlight: 'listenbtn',
@@ -154,8 +151,8 @@ const SLIDES = [
   {
     ch: 'family', scene: 'talk-name', highlight: 'name',
     title: 'Type your name once',
-    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Rhett” or “Grandma.” Your phone remembers it after that.',
-    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Rhett, or Grandma. Your phone remembers it after that.',
+    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Bob Stoops” or “Grandma.” Your phone remembers it after that.',
+    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Bob Stoops, or Grandma. Your phone remembers it after that.',
   },
   {
     ch: 'family', scene: 'talk', highlight: 'mic',

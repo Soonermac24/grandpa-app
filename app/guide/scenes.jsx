@@ -153,7 +153,7 @@ export default function GuideScene({ name, highlight, count, device, msgs }) {
             <div style={{ fontSize: 40, marginBottom: 6 }}>👋</div>
             <div style={{ fontSize: 19, fontWeight: 800, color: '#1a1410', marginBottom: 4 }}>Talk to Papa</div>
             <div style={{ fontSize: 12, color: '#999', textAlign: 'center', marginBottom: 22 }}>Enter your name so he knows who’s sending</div>
-            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Rhett|</div>
+            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Bob Stoops|</div>
             <div style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 12, background: GOLD, color: '#fff', fontSize: 14, fontWeight: 800, textAlign: 'center' }}>Let’s go →</div>
           </div>
         </Phone>
@@ -165,7 +165,7 @@ export default function GuideScene({ name, highlight, count, device, msgs }) {
         <Phone bg={CREAM}>
           <StatusBar />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px', fontFamily: sans }}>
-            <span style={{ color: '#bbb', fontSize: 12 }}>← Rhett</span>
+            <span style={{ color: '#bbb', fontSize: 12 }}>← Bob Stoops</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.4)', borderRadius: 20, padding: '4px 10px', fontSize: 11, color: '#16a34a', fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN }} /> Papa is home
             </span>
