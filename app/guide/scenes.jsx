@@ -16,6 +16,15 @@ const GOLD = '#f0a500'
 const GREEN = '#4ade80'
 const RED = '#ef4444'
 
+// Sweet messages from the grandkids, oldest → newest. The display scene
+// shows the first `count` of them, so they build up across the guide:
+// Kaylee, then Graythan added, then Colbie added.
+const MESSAGES = [
+  { sender: 'KAYLEE', text: 'I love you, Papa!' },
+  { sender: 'GRAYTHAN', text: 'Can’t wait to see you!' },
+  { sender: 'COLBIE', text: 'You’re my favorite, Papa!' },
+]
+
 // Pulsing ring around the element being explained.
 export function ring(on) {
   return on ? { animation: 'guideRing 1.5s ease-in-out infinite', borderRadius: 14, position: 'relative', zIndex: 3 } : {}
@@ -87,11 +96,12 @@ function Msg({ sender, text, big, color = '#fff' }) {
 
 /* ── The scene dispatcher ──────────────────────────────────────── */
 
-export default function GuideScene({ name, highlight }) {
+export default function GuideScene({ name, highlight, count, device }) {
   switch (name) {
 
     /* Papa's big home screen */
-    case 'display':
+    case 'display': {
+      const shown = MESSAGES.slice(0, count || MESSAGES.length)
       return (
         <Monitor>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', borderBottom: '1px solid rgba(240,165,0,0.12)' }}>
@@ -107,14 +117,17 @@ export default function GuideScene({ name, highlight }) {
             </div>
           </div>
           <div style={{ flex: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-            <Msg sender="SARAH" text="See you Sunday!" />
-            <div style={ring(highlight === 'message')}>
-              <Msg sender="EMMA" text="I love you, Papa!" big />
-            </div>
+            {shown.map((m, i) => {
+              const big = i === shown.length - 1
+              return big
+                ? <div key={m.sender} style={ring(highlight === 'message')}><Msg sender={m.sender} text={m.text} big /></div>
+                : <Msg key={m.sender} sender={m.sender} text={m.text} />
+            })}
           </div>
           <div style={{ position: 'absolute', bottom: 8, right: 10, width: 26, height: 26, borderRadius: '50%', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(240,165,0,0.5)', color: GOLD, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, ...ring(highlight === 'gear') }}>⚙</div>
         </Monitor>
       )
+    }
 
     /* The settings popover (text size + color) */
     case 'settings': {
@@ -140,7 +153,7 @@ export default function GuideScene({ name, highlight }) {
             <div style={{ fontSize: 40, marginBottom: 6 }}>👋</div>
             <div style={{ fontSize: 19, fontWeight: 800, color: '#1a1410', marginBottom: 4 }}>Talk to Papa</div>
             <div style={{ fontSize: 12, color: '#999', textAlign: 'center', marginBottom: 22 }}>Enter your name so he knows who’s sending</div>
-            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Emma|</div>
+            <div style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '2px solid #e8e0d0', background: '#fff', color: '#1a1410', fontSize: 16, textAlign: 'center', ...ring(highlight === 'name') }}>Kaylee|</div>
             <div style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 12, background: GOLD, color: '#fff', fontSize: 14, fontWeight: 800, textAlign: 'center' }}>Let’s go →</div>
           </div>
         </Phone>
@@ -152,7 +165,7 @@ export default function GuideScene({ name, highlight }) {
         <Phone bg={CREAM}>
           <StatusBar />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px', fontFamily: sans }}>
-            <span style={{ color: '#bbb', fontSize: 12 }}>← Emma</span>
+            <span style={{ color: '#bbb', fontSize: 12 }}>← Kaylee</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.4)', borderRadius: 20, padding: '4px 10px', fontSize: 11, color: '#16a34a', fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN }} /> Papa is home
             </span>
@@ -174,38 +187,17 @@ export default function GuideScene({ name, highlight }) {
             <span style={{ background: 'rgba(240,165,0,0.15)', border: '1px solid rgba(240,165,0,0.35)', color: GOLD, borderRadius: 20, padding: '5px 11px', fontSize: 11, fontWeight: 600, ...ring(highlight === 'notify') }}>🔔 Notify me</span>
           </div>
           <div style={{ flex: 1, padding: '8px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-            <Msg sender="SARAH" text="See you Sunday!" />
+            <Msg sender={MESSAGES[1].sender} text={MESSAGES[1].text} />
             <div style={ring(highlight === 'message')}>
-              <Msg sender="EMMA" text="I love you, Papa!" big />
+              <Msg sender={MESSAGES[2].sender} text={MESSAGES[2].text} big />
             </div>
           </div>
         </Phone>
       )
 
-    /* Listen Mode */
+    /* Listen Mode — on the home computer (device='monitor') or phone */
     case 'listen':
-      return (
-        <Phone bg="#000">
-          <StatusBar dark />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 14px', fontFamily: sans }}>
-            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>← Display</span>
-            <span style={{ color: highlight === 'stopbtn' ? RED : 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.13em', textTransform: 'uppercase', fontWeight: 700 }}>
-              {highlight === 'stopbtn' ? '● Listening' : 'Listen Mode'}
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>Clear</span>
-          </div>
-          <div style={{ flex: 1, padding: '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            {highlight === 'stopbtn'
-              ? <div style={{ color: '#fff', fontSize: 'clamp(20px,3vw,30px)', fontWeight: 500, lineHeight: 1.3 }}>Would you like some coffee?</div>
-              : <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 15, textAlign: 'center', lineHeight: 1.5 }}>Tap <b style={{ color: '#fff' }}>Listen</b> to start<br />transcribing the conversation around you.</div>}
-          </div>
-          <div style={{ padding: '14px 18px 20px' }}>
-            {highlight === 'stopbtn'
-              ? <div style={{ padding: '16px', fontSize: 18, fontWeight: 700, background: `linear-gradient(135deg,${RED},#dc2626)`, color: '#fff', borderRadius: 14, textAlign: 'center', fontFamily: sans, ...ring(true) }}>⏹  Stop</div>
-              : <div style={{ padding: '16px', fontSize: 18, fontWeight: 700, background: `linear-gradient(135deg,${GOLD},#d98a00)`, color: '#1a1410', borderRadius: 14, textAlign: 'center', fontFamily: sans, ...ring(highlight === 'listenbtn') }}>🎙  Listen</div>}
-          </div>
-        </Phone>
-      )
+      return <ListenScene highlight={highlight} pc={device === 'monitor'} />
 
     /* The QR code to message Papa */
     case 'qr':
@@ -314,7 +306,7 @@ export default function GuideScene({ name, highlight }) {
           <StatusBar dark />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: sans }}>
             <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'linear-gradient(135deg,#f0a500,#d98a00)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 34 }}>🧑</div>
-            <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginTop: 8 }}>Emma</div>
+            <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginTop: 8 }}>Kaylee</div>
             {/* picture-in-picture self */}
             <div style={{ position: 'absolute', top: 36, right: 12, width: 46, height: 64, borderRadius: 10, background: '#3a3340', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>👴</div>
           </div>
@@ -339,6 +331,38 @@ export default function GuideScene({ name, highlight }) {
 /* ── small bits used above ─────────────────────────────────────── */
 
 const chip = { background: 'transparent', border: '1px solid rgba(240,165,0,0.35)', color: 'rgba(240,165,0,0.9)', borderRadius: 8, padding: '6px 12px', fontWeight: 600, fontFamily: sans }
+
+// Listen Mode screen, rendered either on Papa's home computer (pc=true,
+// a Monitor frame) or on a phone for use out in public.
+function ListenScene({ highlight, pc }) {
+  const stopping = highlight === 'stopbtn'
+  const header = (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 16px', fontFamily: sans }}>
+      <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>← Display</span>
+      <span style={{ color: stopping ? RED : 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.13em', textTransform: 'uppercase', fontWeight: 700 }}>
+        {stopping ? '● Listening' : 'Listen Mode'}
+      </span>
+      <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>Clear</span>
+    </div>
+  )
+  const body = (
+    <div style={{ flex: 1, padding: pc ? '24px 44px' : '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      {stopping
+        ? <div style={{ color: '#fff', fontSize: pc ? 'clamp(26px,3.2vw,46px)' : 'clamp(20px,3vw,30px)', fontWeight: 500, lineHeight: 1.3 }}>Would you like some coffee?</div>
+        : <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: pc ? 18 : 15, textAlign: 'center', lineHeight: 1.5 }}>Tap <b style={{ color: '#fff' }}>Listen</b> to start<br />transcribing the conversation around you.</div>}
+    </div>
+  )
+  const btnBase = { width: '100%', maxWidth: pc ? 380 : '100%', padding: '16px', fontSize: 18, fontWeight: 700, borderRadius: 14, textAlign: 'center', fontFamily: sans }
+  const button = (
+    <div style={{ padding: pc ? '14px 0 26px' : '14px 18px 20px', display: 'flex', justifyContent: 'center' }}>
+      {stopping
+        ? <div style={{ ...btnBase, background: `linear-gradient(135deg,${RED},#dc2626)`, color: '#fff', ...ring(true) }}>⏹  Stop</div>
+        : <div style={{ ...btnBase, background: `linear-gradient(135deg,${GOLD},#d98a00)`, color: '#1a1410', ...ring(highlight === 'listenbtn') }}>🎙  Listen</div>}
+    </div>
+  )
+  if (pc) return <Monitor>{header}{body}{button}</Monitor>
+  return <Phone bg="#000"><StatusBar dark />{header}{body}{button}</Phone>
+}
 
 function AppIcon({ emoji, huh, label, highlighted }) {
   return (

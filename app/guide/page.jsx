@@ -28,43 +28,49 @@ const SLIDES = [
     say: 'Welcome to Papa App. This guide shows you what each screen looks like, and points at exactly what to tap. Let us go through it together.',
   },
 
-  // ── Reading messages ──
+  // ── Reading messages ── (messages build up: Kaylee → +Graythan → +Colbie)
   {
-    ch: 'reading', scene: 'display', highlight: 'message',
+    ch: 'reading', scene: 'display', count: 1, highlight: 'message',
     title: 'Your family’s messages appear here',
-    body: 'This is your Home screen. When family sends a message it shows up big, right here. The newest one is the largest, near the bottom.',
-    say: 'This is your home screen. When family sends a message, it shows up here in big letters. The newest message is the largest one, near the bottom.',
+    body: 'This is your Home screen. When someone in the family sends you a message — like this one from Kaylee — it shows up big, right here.',
+    say: 'This is your home screen. When someone in the family sends you a message, like this sweet one from Kaylee, it shows up big, right here.',
   },
   {
-    ch: 'reading', scene: 'display', highlight: 'home',
+    ch: 'reading', scene: 'display', count: 2, highlight: 'home',
     title: 'The green “Papa is home” light',
-    body: 'When this screen is on, your family sees the green “Papa is home” light (circled). Just leave the screen on — you don’t have to do anything.',
-    say: 'When this screen is on, your family sees the green Papa is home light, circled here. Just leave the screen on. You do not have to do anything.',
+    body: 'New messages stack up as they come in — here’s one from Graythan, too. When this screen is on, your family sees the green “Papa is home” light (circled). Just leave the screen on.',
+    say: 'New messages stack up as they come in. Here is one from Graythan, too. And when this screen is on, your family sees the green Papa is home light, circled here. Just leave the screen on.',
   },
 
-  // ── Listen Mode ──
+  // ── Listen Mode ── (shown on Papa's home computer; then on the phone)
   {
-    ch: 'listen', scene: 'display', highlight: 'listen',
-    title: 'Listen Mode — caption the room',
-    body: 'Talking with someone in person? Tap the gold “Listen Mode” button at the top (circled).',
-    say: 'Are you talking with someone in person? Tap the gold Listen Mode button at the top, circled here.',
+    ch: 'listen', scene: 'display', count: 3, highlight: 'listen',
+    title: 'Listen Mode — read what people say',
+    body: 'Talking with someone in the same room and can’t hear them? On your Home screen, tap the gold “Listen Mode” button at the top (circled).',
+    say: 'Are you talking with someone in the same room, and cannot hear them well? On your home screen, tap the gold Listen Mode button at the top, circled here.',
   },
   {
-    ch: 'listen', scene: 'listen', highlight: 'listenbtn',
+    ch: 'listen', scene: 'listen', device: 'monitor', highlight: 'listenbtn',
     title: 'Tap the big “Listen” button',
-    body: 'Tap the large gold “Listen” button (circled). Now what people say out loud appears on the screen as words, while they talk.',
-    say: 'Tap the large gold Listen button, circled here. Now what people say out loud appears on the screen as words, while they talk.',
+    body: 'Now you’re in Listen Mode on your screen. Tap the large gold “Listen” button (circled). What people say out loud appears on the screen as words, while they talk.',
+    say: 'Now you are in Listen Mode on your screen. Tap the large gold Listen button, circled here. What people say out loud appears on the screen as words, while they talk.',
   },
   {
-    ch: 'listen', scene: 'listen', highlight: 'stopbtn',
-    title: 'Tap the red “Stop” when finished',
-    body: 'When you’re done, tap the red “Stop” button (circled). Then use “← Display” at the top to go back to your messages.',
-    say: 'When you are done, tap the red Stop button, circled here. Then use the back link at the top to go back to your messages.',
+    ch: 'listen', scene: 'listen', device: 'monitor', highlight: 'stopbtn',
+    title: 'Always tap “Stop” when you’re finished',
+    body: 'When you’re done, tap the red “Stop” button (circled). That tells it you’re finished, so it stops listening and stays nice and ready for the next time you need it.',
+    say: 'When you are done, always tap the red Stop button, circled here. That tells it you are finished, so it stops listening, and stays nice and ready for the next time you need it.',
+  },
+  {
+    ch: 'listen', scene: 'listen', device: 'phone', highlight: 'listenbtn',
+    title: 'Out in public? Use Listen on your phone',
+    body: 'Listen Mode also works on your phone when you’re away from home — at a restaurant, the doctor, anywhere. Tap “Listen” the same way, and remember to tap “Stop” when you’re done here too.',
+    say: 'Listen Mode also works on your phone, when you are away from home. At a restaurant, the doctor, anywhere. Tap Listen the same way, and remember to tap Stop when you are done here too.',
   },
 
   // ── Bigger text & color ──
   {
-    ch: 'bigger', scene: 'display', highlight: 'gear',
+    ch: 'bigger', scene: 'display', count: 3, highlight: 'gear',
     title: 'Make the words bigger',
     body: 'See the small gear in the bottom-right corner (circled)? Tap it to open your settings.',
     say: 'See the small gear in the bottom right corner, circled here? Tap it to open your settings.',
@@ -132,8 +138,8 @@ const SLIDES = [
   {
     ch: 'family', scene: 'talk-name', highlight: 'name',
     title: 'Type your name once',
-    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Emma” or “Grandma.” Your phone remembers it after that.',
-    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Emma, or Grandma. Your phone remembers it after that.',
+    body: 'The first time, type your name (circled) so Papa knows who’s talking — like “Kaylee” or “Grandma.” Your phone remembers it after that.',
+    say: 'The first time, type your name, circled here, so Papa knows who is talking. Like Kaylee, or Grandma. Your phone remembers it after that.',
   },
   {
     ch: 'family', scene: 'talk', highlight: 'mic',
@@ -156,7 +162,7 @@ const SLIDES = [
     say: 'You are on the phone with Papa. Open the Papa App on your phone too. Then press and hold the microphone, circled here, and say what you are telling him. Let go to send.',
   },
   {
-    ch: 'calling', scene: 'display', highlight: 'message',
+    ch: 'calling', scene: 'display', count: 3, highlight: 'message',
     title: 'Papa reads it on his screen',
     body: 'Your words appear big on Papa’s screen at home (circled). So even on a phone call, he can read along with what you’re saying.',
     say: 'Your words appear big on Papa’s screen at home, circled here. So even on a phone call, he can read along with what you are saying.',
