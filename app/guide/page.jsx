@@ -68,7 +68,7 @@ const SLIDES = [
     msgs: [
       { sender: 'GRAYTHAN', text: 'Can’t wait to see you!' },
       { sender: 'COLBIE', text: 'You’re my favorite, Papa!' },
-      { sender: 'TRINITY', text: 'I drew you a picture, Papa!' },
+      { sender: 'TRINITY', text: 'Love you tons, Papa!' },
     ],
     title: 'Make the words bigger',
     body: 'See the small gear in the bottom-right corner (circled)? Tap it to open your settings.',
@@ -117,10 +117,10 @@ const SLIDES = [
   },
   {
     ch: 'phone', scene: 'read', highlight: 'notify',
-    msgs: [{ sender: 'NANNY', text: 'Stop buying all those guns!' }],
+    msgs: [{ sender: 'PRESTON', text: 'You’re my hero, Papa!' }],
     title: 'Get a buzz when family writes',
-    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family writes — like this one from Nanny.',
-    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family writes. Like this one from Nanny.',
+    body: 'Tap “🔔 Notify me” one time (circled). After that, your phone buzzes whenever family writes — like this one from Preston.',
+    say: 'Tap the Notify me button one time, circled here. After that, your phone buzzes whenever family writes. Like this one from Preston.',
   },
   {
     ch: 'phone', scene: 'listen', device: 'phone', highlight: 'listenbtn',
