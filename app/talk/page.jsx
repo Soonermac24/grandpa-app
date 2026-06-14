@@ -120,6 +120,7 @@ export default function TalkPage() {
         const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
         const formData = new FormData()
         formData.append('audio', blob, 'audio.webm')
+        formData.append('source', 'talk')
 
         const res = await fetch('/api/transcribe', { method: 'POST', body: formData })
         const { text, error: apiError } = await res.json()

@@ -48,6 +48,9 @@ export async function POST(req) {
   try {
     const formData = await req.formData()
     const audio = formData.get('audio')
+    // 'talk' (family sending a message) or 'listen' (Papa's Listen Mode).
+    // Used by the private usage tracker to split costs by feature.
+    const source = formData.get('source') || null
 
     if (!audio) {
       return Response.json({ error: 'No audio received' }, { status: 400 })
@@ -63,7 +66,7 @@ export async function POST(req) {
     const duration = Number(transcription.duration) || 0
     supabase
       .from('usage_log')
-      .insert({ kind: 'transcribe', audio_seconds: duration })
+      .insert({ kind: 'transcribe', audio_seconds: duration, source })
       .then(({ error }) => { if (error) console.error('usage_log insert:', error) })
 
     checkForSpikeAndAlert(req).catch(err => console.error('Spike check failed:', err))

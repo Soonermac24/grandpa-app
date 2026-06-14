@@ -29,6 +29,7 @@ export default function ListenPage() {
     try {
       const fd = new FormData()
       fd.append('audio', blob, 'chunk.webm')
+      fd.append('source', 'listen')
       const res = await fetch('/api/transcribe', { method: 'POST', body: fd })
       const { text, error: apiError } = await res.json()
       if (!apiError && text && text.trim()) {
